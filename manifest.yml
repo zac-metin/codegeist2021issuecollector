@@ -1,0 +1,24 @@
+modules:
+  macro:
+    - key: issuecollector
+      function: main
+      title: issuecollector
+      description: Issue Collector (Secure)
+      config:
+        function: configure
+  function:
+    - key: main
+      handler: index.run
+    - key: configure
+      handler: config.run
+permissions:
+  scopes:
+    - "write:jira-work"
+    - "read:jira-work"
+  external:
+    fetch:
+      backend:
+        - 'https://trinitynz.atlassian.net/*'
+app:
+  id: ari:cloud:ecosystem::app/c911d55a-2729-4d70-8f6f-8784bd4c4bc6
+  name: issuecollector
