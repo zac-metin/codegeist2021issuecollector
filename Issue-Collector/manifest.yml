@@ -1,9 +1,0 @@
-modules:
-  macro:
-    - key: hello-world
-      function: main
-      title: Hello world!
-      description: Inserts Hello world!
-  function:
-    - key: main
-      handler: index.run

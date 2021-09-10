@@ -3,7 +3,7 @@ modules:
     - key: issuecollector
       function: main
       title: issuecollector
-      description: Issue Collector (Secure)
+      description: Issue Collector
       config:
         function: configure
   function:
@@ -18,7 +18,7 @@ permissions:
   external:
     fetch:
       backend:
-        - 'https://trinitynz.atlassian.net/*'
+        - 'https://instancename.atlassian.net/*'
 app:
   id: ari:cloud:ecosystem::app/c911d55a-2729-4d70-8f6f-8784bd4c4bc6
   name: issuecollector
