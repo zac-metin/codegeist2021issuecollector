@@ -1,6 +1,7 @@
-import ForgeUI, { render, Fragment, Macro, Text, Link, Button, Form, SectionMessage, useConfig, useProductContext, useState } from "@forge/ui";
+import ForgeUI, { render, Fragment, Macro, Text, Link, Button, Form, TextField, TextArea, SectionMessage, useConfig, useProductContext, useState } from "@forge/ui";
 
 import { requestJira, postJira } from "./utils/requestJira";
+import handleError from "./utils/handleError";
 
 import FormItem from './UI/FormItem';
 import formatIssue from './utils/formatIssue';
@@ -28,65 +29,14 @@ const App = () => {
 
   const createIssue = async (formValues) => {
     setIssueKey(null);
-    let payload = {
-      fields: {
-        project: {
-          key: config.projectKey
-        },
-        issuetype: {
-          id: config.issueTypeId
-        },
-        assignee: {
-          id: config.assignee
-        }
-      }
-    };
-    if(config.reporter === 'author') {
-      payload.fields.reporter = {
-        accountId: accountId
-      };
-    }
-    if(formValues) {
-      Object.keys(formValues).forEach(field => {
-        const { fieldValue, validField } = formatIssue(field, formValues[field], config, fieldOptions);
-        if(fieldValue && validField) {
-          payload.fields[field] = fieldValue;
-        }
-      })
- 
-    if(config.presets) {
-      config.presets.forEach((field) => {
-        if(!Object.keys(formValues).includes(field)) {
-          if(config[`preset${field}`]) {
-            const { fieldValue, validField } = formatIssue(
-              field,
-              config[`preset${field}`],
-              config,
-              fieldOptions
-            );
-            if(fieldValue && validField) {
-              payload.fields[field] = fieldValue;
-            }
-          }
-        }
-      })
-    }
-    };
+    
+    const payload = formatIssue(config, formValues, fieldOptions, accountId);
 
     const response = await postJira("/rest/api/2/issue", payload);
     
     const responseBody = await response.json();
     if(!response.ok) {
-      console.error(responseBody);
-      const firstErrorMessage = responseBody.errorMessages[0];
-      let errorMessage = firstErrorMessage ? firstErrorMessage : '';
-      if(responseBody.errors) {
-        const messageSeparator = ".";
-        const additionalErrorText = Object.values(responseBody.errors).join(messageSeparator);
-        if(additionalErrorText) {
-          errorMessage = errorMessage ? errorMessage + messageSeparator + additionalErrorText : additionalErrorText;
-        }
-      }
+      const errorMessage = handleError(responseBody);
       setError(errorMessage || 'Failed to create issue.');
     } else {
       setError(null);
@@ -110,10 +60,10 @@ const App = () => {
     const selectedFieldOptions = allFieldOptions.filter(option => (
       (option.required && excludeFields.indexOf(option.name) === -1) ||
       config.fields.includes(option.key)
-      || option.name === "Description"));
+      || option.name === "Description" || option.name === "Summary"));
       return selectedFieldOptions.map(item => <FormItem item={item} config={config} />);
   };
-
+console.log(config);
   const form = () => (
     <Fragment>
       <SectionMessage title={config.collectorName || 'Issue Collector'} appearance="info">
@@ -122,6 +72,8 @@ const App = () => {
       <Form onSubmit={createIssue}>
     {error ? (<Text content={`Error: ${error}`} />
     ) : (<Text content="Please complete the fields below:" />)}
+    <TextField label={config.renamedsummary || 'Summary'} name="summary" defaultValue={config.presetSummary} />
+    <TextArea label={config.renameddescription || 'Description'} name="description" defaultValue={config.presetDescription} />
     {config.fields && fieldOptions && textFields()}
       </Form>
     </Fragment>

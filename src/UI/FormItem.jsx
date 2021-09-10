@@ -5,10 +5,10 @@ const FormItem = (props) => {
     let defaultValue = config.presets && config.presets.includes(item.key) ? 
         config[`preset${item.key}`] :
         null;
-    let customLabel = config.customnamedFields && config.customnamedFields.includes(item.key) ? 
-        config[`custom${item.key}`] :
+    let customLabel = config.renamed && config.renamed.includes(item.key) ? 
+        config[`renamed${item.key}`] :
         null;
-    if(item.name === "Description") return <TextArea label={customLabel || item.name} name={item.key} defaultValue={defaultValue} />
+    if(item.name === "Description" || item.name === "Summary") return null;
     if(item.allowedValues) {
         if(item.allowedValues.length > 0) {
             return (

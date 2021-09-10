@@ -74,3 +74,8 @@ This definitely highlighted the capacities of Forge, so I learned what its capab
 ## What's next for IssueCollector for Confluence Cloud
 
 I'm hoping to refine it and develop it into a Marketplace app
+
+## Feedback Issues
+
+Loading state on render changes
+Fetch based selects
