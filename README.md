@@ -1,16 +1,12 @@
-# Forge Hello World
+# Forge Issue Collector
 
 This project contains a Forge app written in Javascript that displays a Confluence macro to create issues. 
 
-See [developer.atlassian.com/platform/forge/](https://developer.atlassian.com/platform/forge) for documentation and tutorials explaining Forge.
 
 ## Requirements
 
-See [Set up Forge](https://developer.atlassian.com/platform/forge/set-up-forge/) for instructions to get set up.
 
 ## Quick start
-
-- Modify your app by editing the `src/index.jsx` file.
 
 - Build and deploy your app by running:
 ```
@@ -28,14 +24,12 @@ forge tunnel
 ```
 
 ### Notes
-- Use the `forge deploy` command when you want to persist code changes.
-- Use the `forge install` command when you want to install the app on a new site.
-- Once the app is installed on a site, the site picks up the new app changes you deploy without needing to rerun the install command.
+You will need to set the following forge environment variables:
+- baseUrl (eg "https://yourinstance.atlassian.net")
+- username
+- token (Atlassian API token)
 
-## Support
-
-See [Get help](https://developer.atlassian.com/platform/forge/get-help/) for how to get help and provide feedback.
-
+I recommend using a separate account to act as the issuecollector for security/safety
 
 
 
@@ -74,8 +68,3 @@ This definitely highlighted the capacities of Forge, so I learned what its capab
 ## What's next for IssueCollector for Confluence Cloud
 
 I'm hoping to refine it and develop it into a Marketplace app
-
-## Feedback Issues
-
-Loading state on render changes
-Fetch based selects
